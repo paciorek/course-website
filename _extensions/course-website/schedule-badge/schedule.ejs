@@ -1,0 +1,49 @@
+```{=html}
+<% for (const item of items) { %>
+
+   <h4>Week <%- item.week %></h4>
+
+   <table class="table" data-quarto-disable-processing="true">
+   <!-- 'table' class causes use of quarto styling for tables, seemingly from bootstrap.min.css -->
+   <!-- data-quarto-disable-processing="true" prevents Quarto processing of tables (https://quarto.org/docs/authoring/tables.html#disabling-quarto-table-processing) -->
+   
+   <tbody>
+   <% for (const day of item.days) { %>
+
+        <% for (let i = 0; i < day.docs.length; i++) { %>
+
+
+
+           <tr>
+           <% if (i == 0) { %>
+           <th id="th-schedule"scope="row" rowspan="<%- day.docs.length %>"><%- day.date %>:</th>
+           <% } %>
+           <% if (!day.docs[i].draft){ %>
+              <td id="td-schedule"><strong class="label label-<%- day.docs[i].type %>"><%- day.docs[i].type %> <%- day.docs[i].id %></strong> <a href="<%- day.docs[i].href %>" target="_blank"><%- day.docs[i].name %></a></td>
+           <% } else { %>
+              <td id="td-schedule"><strong class="label label-<%- day.docs[i].type %>"><%- day.docs[i].type %> <%- day.docs[i].id %></strong> <a class="unpublished"><%- day.docs[i].name %></a></td>
+           <% } %>
+           <% if (day.docs[i].auxil) { %>
+                <td id="td-schedule">
+                <% for (let j = 0; j < day.docs[i].auxil.items.length; j++) { %>
+                  <% if (!day.docs[i].draft){ %>
+                    <a href="<%- day.docs[i].auxil.items[j].href %>"><%- day.docs[i].auxil.items[j].id %></a>
+                  <% } else { %>
+                    <a class="unpublished"><%- day.docs[i].auxil.items[j].id %></a>
+                  <% } %>
+                  <% } %>
+                </td>
+           <% } else{ %>
+                <td></td>
+           <% } %>
+                
+           </tr>
+        <% } %>
+   <% } %>
+   </tbody>
+   </table>
+  
+
+<% } %>
+
+```
